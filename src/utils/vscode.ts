@@ -1485,123 +1485,98 @@ Update your skills and proficiency levels:
 🚀 **Keep coding, keep learning, keep rising!** 🚀`
   };
 
-  // Create a proper ZIP file using a simple implementation
-  createAndDownloadZip(starterFiles, 'riseintech-starter-project.zip');
+  // Download each file separately
+  downloadSeparateFiles(starterFiles);
   
   // Show instructions
   setTimeout(() => {
-    showZipInstructions();
+    showSeparateFilesInstructions();
   }, 1000);
 };
 
-// Simple ZIP creation function
-const createAndDownloadZip = (files: Record<string, string>, filename: string) => {
-  // Create a simple text-based archive format that can be easily extracted
-  let zipContent = `# RiseInTech Starter Project Archive
-# Extract these files to get started with your project
-# 
-# Files included:
-# - index.html (Main webpage)
-# - style.css (Styling)
-# - script.js (JavaScript functionality)
-# - README.md (Documentation)
-#
-# Instructions:
-# 1. Create a new folder called "my-riseintech-project"
-# 2. Copy each file content below into separate files
-# 3. Open index.html in your browser
-# 4. Start customizing!
-
-`;
-
-  Object.entries(files).forEach(([filename, content]) => {
-    zipContent += `
-${'='.repeat(60)}
-FILE: ${filename}
-${'='.repeat(60)}
-
-${content}
-
-`;
+// Download files separately
+const downloadSeparateFiles = (files: Record<string, string>) => {
+  let downloadCount = 0;
+  const totalFiles = Object.keys(files).length;
+  
+  Object.entries(files).forEach(([filename, content], index) => {
+    setTimeout(() => {
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      downloadCount++;
+      
+      // Show progress
+      console.log(`Downloaded ${downloadCount}/${totalFiles}: ${filename}`);
+    }, index * 500); // Stagger downloads by 500ms
   });
-
-  zipContent += `
-${'='.repeat(60)}
-END OF ARCHIVE
-${'='.repeat(60)}
-
-🎉 Your RiseInTech starter project is ready!
-
-Next steps:
-1. Create a folder called "my-riseintech-project"
-2. Create each file (index.html, style.css, script.js, README.md)
-3. Copy the content from above into each file
-4. Open index.html in your browser
-5. Start coding!
-
-Happy learning! 🚀
-`;
-
-  // Download the archive
-  const blob = new Blob([zipContent], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
 };
 
-const showZipInstructions = () => {
+const showSeparateFilesInstructions = () => {
   const instructions = `
-🎉 STARTER PROJECT DOWNLOADED!
+🎉 STARTER PROJECT FILES DOWNLOADING!
 
-📦 You've downloaded: riseintech-starter-project.zip
+📦 You're getting 4 separate files:
+✅ index.html - Main webpage
+✅ style.css - Beautiful styling  
+✅ script.js - Interactive features
+✅ README.md - Complete documentation
 
-🚀 HOW TO GET STARTED:
+🚀 HOW TO SET UP YOUR PROJECT:
 
-1️⃣ EXTRACT THE FILES
-   • Open the downloaded file
-   • You'll see all the code organized by filename
+1️⃣ CREATE PROJECT FOLDER
    • Create a new folder called "my-riseintech-project"
+   • Move all 4 downloaded files into this folder
 
-2️⃣ CREATE YOUR FILES
-   • Create these 4 files in your project folder:
-     - index.html
-     - style.css  
-     - script.js
-     - README.md
-   
-3️⃣ COPY THE CODE
-   • Copy each section from the downloaded file
-   • Paste into the corresponding file
-   • Save all files
+2️⃣ ORGANIZE YOUR FILES
+   • Make sure all files are in the same folder:
+     my-riseintech-project/
+     ├── index.html
+     ├── style.css
+     ├── script.js
+     └── README.md
 
-4️⃣ OPEN YOUR PROJECT
+3️⃣ OPEN YOUR PROJECT
    • Double-click index.html to open in browser
    • Or use VS Code with Live Server extension
 
-📋 WHAT'S INCLUDED:
-✅ Complete HTML structure
-✅ Professional CSS styling
-✅ Interactive JavaScript features
-✅ Comprehensive documentation
-✅ Mobile responsive design
-✅ Contact form with validation
-✅ Smooth animations and effects
+4️⃣ START CUSTOMIZING
+   • Replace "Your Name" with your actual name
+   • Update contact information
+   • Add your own projects and photos
+   • Change colors and styling
 
-💡 TIPS:
-• Read the README.md for detailed instructions
-• Customize colors, text, and images
-• Add your own projects and information
-• Deploy to GitHub Pages when ready
+📋 WHAT'S INCLUDED:
+✅ Complete responsive portfolio website
+✅ Mobile navigation and smooth scrolling
+✅ Contact form with validation
+✅ Animated skill bars and hover effects
+✅ Professional design with modern CSS
+✅ Comprehensive documentation and setup guide
+
+💡 TIPS FOR SUCCESS:
+• Read the README.md file first - it has everything you need!
+• Start by customizing the personal information
+• Use VS Code with Live Server for the best experience
+• Deploy to GitHub Pages when you're ready to share
 
 🆘 NEED HELP?
-• Check the README.md file for troubleshooting
-• Join our community for support
-• Follow the step-by-step guide included
+• Check the README.md for detailed instructions
+• All code is well-commented for learning
+• Join our community for support and feedback
+
+🎯 YOUR NEXT STEPS:
+1. Set up the project folder
+2. Open in VS Code or your favorite editor
+3. Customize with your information
+4. Deploy and share your work!
 
 Happy coding! 🚀
   `;
