@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Code, Download, Github, ExternalLink, CheckCircle, Globe, FolderPlus } from 'lucide-react';
 import { 
   openInVSCode, 

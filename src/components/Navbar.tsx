@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, BookOpen, User, Trophy, Sparkles } from 'lucide-react'
 import { useApp } from '../context/AppContext'

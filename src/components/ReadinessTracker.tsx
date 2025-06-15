@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Target, Clock, Star, BookOpen, Award } from 'lucide-react';
 import { ReadinessAssessment } from '../types/evaluation';
@@ -13,12 +12,6 @@ export default function ReadinessTracker({ assessment, className = '' }: Readine
     if (score >= 80) return 'text-green-600';
     if (score >= 60) return 'text-yellow-600';
     return 'text-red-600';
-  };
-
-  const getReadinessBgColor = (score: number) => {
-    if (score >= 80) return 'bg-green-100';
-    if (score >= 60) return 'bg-yellow-100';
-    return 'bg-red-100';
   };
 
   const getReadinessMessage = (score: number) => {
