@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Upload, Code, FileText, AlertCircle, CheckCircle, Loader, Archive, FolderOpen } from 'lucide-react';
+import { Upload, FileText, AlertCircle, CheckCircle, Loader, Archive, FolderOpen } from 'lucide-react';
 import { CodeSubmission, CodeFile } from '../types/evaluation';
 import { codeEvaluator } from '../services/codeEvaluator';
 
@@ -87,8 +87,7 @@ export default function CodeSubmissionComponent({
       
       reader.onload = async (e) => {
         try {
-          const arrayBuffer = e.target?.result as ArrayBuffer;
-          const extractedFiles = await parseZipFile(arrayBuffer);
+          const extractedFiles = await parseZipFile();
           resolve(extractedFiles);
         } catch (error) {
           reject(error);
@@ -100,11 +99,9 @@ export default function CodeSubmissionComponent({
     });
   };
 
-  const parseZipFile = async (arrayBuffer: ArrayBuffer): Promise<CodeFile[]> => {
+  const parseZipFile = async (): Promise<CodeFile[]> => {
     // Simple ZIP file parser (in a real app, you'd use a library like JSZip)
     // For now, we'll simulate ZIP extraction with a mock implementation
-    
-    const files: CodeFile[] = [];
     
     // Mock extracted files - in reality, you'd parse the ZIP structure
     const mockFiles = [
