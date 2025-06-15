@@ -7,6 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
         primary: {
           50: '#fdf2f8',
           100: '#fce7f3',
@@ -18,6 +23,8 @@ export default {
           700: '#be185d',
           800: '#9d174d',
           900: '#831843',
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           50: '#f0f9ff',
@@ -30,6 +37,8 @@ export default {
           700: '#0369a1',
           800: '#075985',
           900: '#0c4a6e',
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
         },
         accent: {
           50: '#fefce8',
@@ -42,6 +51,8 @@ export default {
           700: '#a16207',
           800: '#854d0e',
           900: '#713f12',
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         }
       },
       fontFamily: {
