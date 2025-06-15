@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Code, User, BookOpen, Trophy } from 'lucide-react'
+import { Menu, X, BookOpen, User, Trophy, Sparkles } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 
 export default function Navbar() {
@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: BookOpen },
-    { name: 'Projects', href: '/projects', icon: Code },
+    { name: 'Projects', href: '/projects', icon: Sparkles },
     { name: 'Portfolio', href: '/portfolio', icon: Trophy },
     { name: 'Profile', href: '/profile', icon: User },
   ]
@@ -18,30 +18,35 @@ export default function Navbar() {
   const isActive = (path: string) => location.pathname === path
 
   return (
-    <nav className="bg-white shadow-lg fixed w-full top-0 z-50">
+    <nav className="bg-white shadow-lg fixed w-full top-0 z-50 border-b-2 border-gradient-to-r from-pink-500 to-purple-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                <Code className="w-5 h-5 text-white" />
+            <Link to="/" className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <Sparkles className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">RiseInTech</span>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  Women in Tech
+                </span>
+                <span className="text-xs text-gray-500 font-medium">Empowering Future Leaders</span>
+              </div>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {state.isOnboarded && navigation.map((item) => {
               const Icon = item.icon
               return (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
                     isActive(item.href)
-                      ? 'text-primary-600 bg-primary-50'
-                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                      ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg transform scale-105'
+                      : 'text-gray-700 hover:text-pink-600 hover:bg-pink-50'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -53,7 +58,7 @@ export default function Navbar() {
             {!state.isOnboarded && (
               <Link
                 to="/onboarding"
-                className="btn-primary"
+                className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-pink-600 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Get Started
               </Link>
@@ -64,7 +69,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-primary-600 focus:outline-none focus:text-primary-600"
+              className="text-gray-700 hover:text-pink-600 focus:outline-none focus:text-pink-600 p-2 rounded-lg hover:bg-pink-50 transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -75,17 +80,17 @@ export default function Navbar() {
       {/* Mobile Navigation */}
       {isOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-pink-100 shadow-lg">
             {state.isOnboarded && navigation.map((item) => {
               const Icon = item.icon
               return (
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  className={`flex items-center space-x-3 px-4 py-3 rounded-xl text-base font-medium transition-all duration-200 ${
                     isActive(item.href)
-                      ? 'text-primary-600 bg-primary-50'
-                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                      ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white'
+                      : 'text-gray-700 hover:text-pink-600 hover:bg-pink-50'
                   }`}
                   onClick={() => setIsOpen(false)}
                 >
@@ -98,7 +103,7 @@ export default function Navbar() {
             {!state.isOnboarded && (
               <Link
                 to="/onboarding"
-                className="block px-3 py-2 text-base font-medium text-primary-600 hover:text-primary-700"
+                className="block px-4 py-3 text-base font-medium bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl text-center"
                 onClick={() => setIsOpen(false)}
               >
                 Get Started
