@@ -12,7 +12,8 @@ import {
   Star,
   Code,
   BookOpen,
-  Users
+  Users,
+  Upload
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import VSCodeButton from '../components/VSCodeButton'
@@ -408,6 +409,13 @@ export default function ProjectDetail() {
                   <Github className="w-4 h-4 mr-2" />
                   Create Repository
                 </button>
+                <Link
+                  to={`/projects/${project.id}/evaluate/milestone-1`}
+                  className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Submit Code for Review
+                </Link>
                 <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                   <Users className="w-4 h-4 mr-2" />
                   Join Discussion

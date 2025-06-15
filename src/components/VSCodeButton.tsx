@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
-import { Code, Download, Github, ExternalLink, CheckCircle } from 'lucide-react';
-import { openInVSCode, downloadProject, createGitHubRepo, showVSCodeInstructions } from '../utils/vscode';
+import { Code, Download, Github, ExternalLink, CheckCircle, Globe, FolderPlus } from 'lucide-react';
+import { 
+  openInVSCode, 
+  openVSCodeWeb, 
+  createNewProject, 
+  createGitHubRepo, 
+  showVSCodeInstructions 
+} from '../utils/vscode';
 
 interface VSCodeButtonProps {
   variant?: 'primary' | 'secondary';
@@ -27,7 +33,7 @@ export default function VSCodeButton({
     // Show success state briefly
     setTimeout(() => {
       setIsClicked(false);
-    }, 2000);
+    }, 3000);
   };
 
   const handleShowOptions = () => {
@@ -83,13 +89,13 @@ export default function VSCodeButton({
           onClick={handleShowOptions}
           className="text-sm text-gray-600 hover:text-gray-800 underline"
         >
-          More options
+          More coding options
         </button>
         
         {showOptions && (
-          <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+          <div className="absolute top-full left-0 mt-2 w-72 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
             <div className="p-4">
-              <h3 className="font-semibold text-gray-900 mb-3">Development Options</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Choose Your Coding Environment</h3>
               <div className="space-y-2">
                 <button
                   onClick={() => {
@@ -99,7 +105,38 @@ export default function VSCodeButton({
                   className="w-full flex items-center px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-md"
                 >
                   <Code className="w-4 h-4 mr-3 text-blue-600" />
-                  Open in VS Code
+                  <div>
+                    <div className="font-medium">Open VS Code Desktop</div>
+                    <div className="text-xs text-gray-500">Best experience (requires installation)</div>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    openVSCodeWeb();
+                    setShowOptions(false);
+                  }}
+                  className="w-full flex items-center px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-md"
+                >
+                  <Globe className="w-4 h-4 mr-3 text-green-600" />
+                  <div>
+                    <div className="font-medium">Open VS Code Web</div>
+                    <div className="text-xs text-gray-500">Code in browser (no installation needed)</div>
+                  </div>
+                </button>
+                
+                <button
+                  onClick={() => {
+                    createNewProject();
+                    setShowOptions(false);
+                  }}
+                  className="w-full flex items-center px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-md"
+                >
+                  <Download className="w-4 h-4 mr-3 text-purple-600" />
+                  <div>
+                    <div className="font-medium">Download Starter Project</div>
+                    <div className="text-xs text-gray-500">Get template files to start coding</div>
+                  </div>
                 </button>
                 
                 <button
@@ -110,18 +147,10 @@ export default function VSCodeButton({
                   className="w-full flex items-center px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-md"
                 >
                   <Github className="w-4 h-4 mr-3 text-gray-800" />
-                  Create GitHub Repo
-                </button>
-                
-                <button
-                  onClick={() => {
-                    downloadProject();
-                    setShowOptions(false);
-                  }}
-                  className="w-full flex items-center px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-md"
-                >
-                  <Download className="w-4 h-4 mr-3 text-green-600" />
-                  Download Project
+                  <div>
+                    <div className="font-medium">Create GitHub Repository</div>
+                    <div className="text-xs text-gray-500">Set up version control and portfolio</div>
+                  </div>
                 </button>
                 
                 <button
@@ -131,8 +160,11 @@ export default function VSCodeButton({
                   }}
                   className="w-full flex items-center px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-md"
                 >
-                  <ExternalLink className="w-4 h-4 mr-3 text-purple-600" />
-                  Setup Instructions
+                  <ExternalLink className="w-4 h-4 mr-3 text-orange-600" />
+                  <div>
+                    <div className="font-medium">Setup Instructions</div>
+                    <div className="text-xs text-gray-500">Step-by-step coding setup guide</div>
+                  </div>
                 </button>
               </div>
             </div>
