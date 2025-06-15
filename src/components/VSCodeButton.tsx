@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Code, Download, Github, ExternalLink, CheckCircle, Globe, FolderPlus } from 'lucide-react';
+import { Code, Download, Github, ExternalLink, CheckCircle, Globe } from 'lucide-react';
 import { 
   openInVSCode, 
   openVSCodeWeb, 

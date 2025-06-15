@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Upload, BarChart3 } from 'lucide-react';
 import CodeSubmissionComponent from '../components/CodeSubmission';
