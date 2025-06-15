@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { 
@@ -141,7 +141,7 @@ export default function Onboarding() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold text-gray-900">Welcome to RiseInTech</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Welcome to Women in Tech</h1>
             <span className="text-sm text-gray-600">Step {step} of 3</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">

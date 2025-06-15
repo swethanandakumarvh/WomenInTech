@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   User, 
@@ -11,8 +11,7 @@ import {
   Edit,
   Save,
   X,
-  CheckCircle,
-  AlertCircle
+  CheckCircle
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 
