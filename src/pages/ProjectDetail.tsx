@@ -15,6 +15,7 @@ import {
   Users
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
+import VSCodeButton from '../components/VSCodeButton'
 
 // Mock project data - in a real app, this would come from an API
 const projectData = {
@@ -397,10 +398,12 @@ export default function ProjectDetail() {
             <div className="card">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
               <div className="space-y-3">
-                <button className="w-full flex items-center justify-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
-                  <Play className="w-4 h-4 mr-2" />
-                  Start Coding
-                </button>
+                <VSCodeButton 
+                  variant="primary" 
+                  size="md" 
+                  className="w-full"
+                  projectPath="/home/project"
+                />
                 <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
                   <Github className="w-4 h-4 mr-2" />
                   Create Repository
