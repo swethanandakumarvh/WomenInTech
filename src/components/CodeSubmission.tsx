@@ -85,7 +85,7 @@ export default function CodeSubmissionComponent({
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       
-      reader.onload = async (e) => {
+      reader.onload = async () => {
         try {
           const extractedFiles = await parseZipFile();
           resolve(extractedFiles);

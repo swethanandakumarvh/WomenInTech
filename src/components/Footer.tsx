@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { Sparkles, Heart, Github, Twitter, Linkedin, Instagram } from 'lucide-react'
 
