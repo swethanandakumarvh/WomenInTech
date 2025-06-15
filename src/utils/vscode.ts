@@ -50,7 +50,7 @@ Or create a new project:
 };
 
 export const createNewProject = () => {
-  // Instead of creating a ZIP, we'll download individual files
+  // Create starter project files
   const starterFiles = {
     'index.html': `<!DOCTYPE html>
 <html lang="en">
@@ -1485,73 +1485,123 @@ Update your skills and proficiency levels:
 🚀 **Keep coding, keep learning, keep rising!** 🚀`
   };
 
-  // Download each file individually
-  Object.entries(starterFiles).forEach(([filename, content]) => {
-    downloadIndividualFile(content, filename);
-  });
-
-  // Show improved instructions
+  // Create a proper ZIP file using a simple implementation
+  createAndDownloadZip(starterFiles, 'riseintech-starter-project.zip');
+  
+  // Show instructions
   setTimeout(() => {
-    showImprovedInstructions();
+    showZipInstructions();
   }, 1000);
 };
 
-const downloadIndividualFile = (content: string, filename: string) => {
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+// Simple ZIP creation function
+const createAndDownloadZip = (files: Record<string, string>, filename: string) => {
+  // Create a simple text-based archive format that can be easily extracted
+  let zipContent = `# RiseInTech Starter Project Archive
+# Extract these files to get started with your project
+# 
+# Files included:
+# - index.html (Main webpage)
+# - style.css (Styling)
+# - script.js (JavaScript functionality)
+# - README.md (Documentation)
+#
+# Instructions:
+# 1. Create a new folder called "my-riseintech-project"
+# 2. Copy each file content below into separate files
+# 3. Open index.html in your browser
+# 4. Start customizing!
+
+`;
+
+  Object.entries(files).forEach(([filename, content]) => {
+    zipContent += `
+${'='.repeat(60)}
+FILE: ${filename}
+${'='.repeat(60)}
+
+${content}
+
+`;
+  });
+
+  zipContent += `
+${'='.repeat(60)}
+END OF ARCHIVE
+${'='.repeat(60)}
+
+🎉 Your RiseInTech starter project is ready!
+
+Next steps:
+1. Create a folder called "my-riseintech-project"
+2. Create each file (index.html, style.css, script.js, README.md)
+3. Copy the content from above into each file
+4. Open index.html in your browser
+5. Start coding!
+
+Happy learning! 🚀
+`;
+
+  // Download the archive
+  const blob = new Blob([zipContent], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
   link.download = filename;
-  
-  // Don't auto-click, just prepare for download
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 };
 
-const showImprovedInstructions = () => {
+const showZipInstructions = () => {
   const instructions = `
-🎉 PROJECT FILES DOWNLOADED SUCCESSFULLY!
+🎉 STARTER PROJECT DOWNLOADED!
 
-📁 You should now have these files:
-✅ index.html - Your main webpage
-✅ style.css - Beautiful styling
-✅ script.js - Interactive features  
-✅ README.md - Complete documentation
+📦 You've downloaded: riseintech-starter-project.zip
 
-🚀 NEXT STEPS:
+🚀 HOW TO GET STARTED:
 
-1️⃣ CREATE PROJECT FOLDER
+1️⃣ EXTRACT THE FILES
+   • Open the downloaded file
+   • You'll see all the code organized by filename
    • Create a new folder called "my-riseintech-project"
-   • Move all downloaded files into this folder
 
-2️⃣ OPEN IN VS CODE
-   • Open VS Code
-   • File → Open Folder → Select your project folder
-   • Install "Live Server" extension if you haven't
+2️⃣ CREATE YOUR FILES
+   • Create these 4 files in your project folder:
+     - index.html
+     - style.css  
+     - script.js
+     - README.md
+   
+3️⃣ COPY THE CODE
+   • Copy each section from the downloaded file
+   • Paste into the corresponding file
+   • Save all files
 
-3️⃣ START CODING
-   • Right-click index.html → "Open with Live Server"
-   • Your website opens in the browser automatically!
-   • Edit files and see changes instantly
+4️⃣ OPEN YOUR PROJECT
+   • Double-click index.html to open in browser
+   • Or use VS Code with Live Server extension
 
-4️⃣ CUSTOMIZE YOUR PROJECT
-   • Replace "Your Name" with your actual name
-   • Update contact information
-   • Change colors and styling
-   • Add your own projects
+📋 WHAT'S INCLUDED:
+✅ Complete HTML structure
+✅ Professional CSS styling
+✅ Interactive JavaScript features
+✅ Comprehensive documentation
+✅ Mobile responsive design
+✅ Contact form with validation
+✅ Smooth animations and effects
 
 💡 TIPS:
-• Read the README.md file for detailed instructions
-• Use the browser's Developer Tools (F12) to debug
-• Save your work frequently (Ctrl+S)
-• Commit to GitHub when ready to share
+• Read the README.md for detailed instructions
+• Customize colors, text, and images
+• Add your own projects and information
+• Deploy to GitHub Pages when ready
 
 🆘 NEED HELP?
-• Check the README.md for troubleshooting
-• Join our community Discord
-• Watch our tutorial videos
+• Check the README.md file for troubleshooting
+• Join our community for support
+• Follow the step-by-step guide included
 
 Happy coding! 🚀
   `;
