@@ -1559,29 +1559,6 @@ Happy coding! 🚀
   alert(instructions);
 };
 
-export const openVSCodeWeb = () => {
-  // Open VS Code for the Web (vscode.dev)
-  const url = 'https://vscode.dev/';
-  window.open(url, '_blank', 'width=1200,height=800');
-  
-  setTimeout(() => {
-    alert(`
-🌐 VS Code Web Opened!
-
-Next Steps:
-1. In VS Code Web, click "Open Folder"
-2. Choose "GitHub" or "Clone Repository"
-3. Enter your repository URL
-4. Start coding in the browser!
-
-Or create a new project:
-1. Click "New File" 
-2. Create index.html, style.css, script.js
-3. Start building your project!
-    `);
-  }, 1000);
-};
-
 export const showSuccessMessage = () => {
   const message = `
 🎉 VS Code Opening...
