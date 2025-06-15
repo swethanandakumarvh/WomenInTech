@@ -13,7 +13,17 @@ import {
   Code,
   BookOpen,
   Users,
-  Upload
+  Upload,
+  MessageCircle,
+  Send,
+  ThumbsUp,
+  Reply,
+  Filter,
+  Search,
+  Plus,
+  Heart,
+  Share2,
+  Bookmark
 } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import VSCodeButton from '../components/VSCodeButton'
@@ -85,14 +95,118 @@ const projectData = {
       { title: 'JavaScript Fundamentals', type: 'article', url: '#' },
       { title: 'Git & GitHub Guide', type: 'documentation', url: '#' },
       { title: 'Responsive Design Patterns', type: 'examples', url: '#' }
-    ]
+    ],
+    githubRepo: 'https://github.com/riseintech/portfolio-template',
+    liveDemo: 'https://portfolio-template.netlify.app',
+    isBookmarked: false,
+    likes: 342,
+    shares: 89
   }
 }
+
+// Mock discussion data
+const mockDiscussions = [
+  {
+    id: '1',
+    user: {
+      name: 'Sarah Chen',
+      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+      level: 'Intermediate',
+      badge: '🌟'
+    },
+    content: 'I\'m having trouble with the responsive design part. My navigation menu doesn\'t collapse properly on mobile devices. Has anyone else encountered this issue?',
+    timestamp: '2 hours ago',
+    likes: 12,
+    replies: [
+      {
+        id: '1-1',
+        user: {
+          name: 'Maria Rodriguez',
+          avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+          level: 'Advanced',
+          badge: '🚀'
+        },
+        content: 'Try using CSS media queries with max-width: 768px. Also make sure you have the viewport meta tag in your HTML head section.',
+        timestamp: '1 hour ago',
+        likes: 8
+      },
+      {
+        id: '1-2',
+        user: {
+          name: 'Alex Kim',
+          avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+          level: 'Beginner',
+          badge: '🌱'
+        },
+        content: 'I had the same issue! The hamburger menu JavaScript wasn\'t working. Check if you\'re targeting the right CSS classes.',
+        timestamp: '45 minutes ago',
+        likes: 5
+      }
+    ],
+    tags: ['responsive-design', 'mobile', 'navigation'],
+    isLiked: false,
+    category: 'question'
+  },
+  {
+    id: '2',
+    user: {
+      name: 'Jennifer Park',
+      avatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+      level: 'Beginner',
+      badge: '🌱'
+    },
+    content: 'Just finished my portfolio! 🎉 It took me 3 weeks but I learned so much. The CSS animations were challenging but totally worth it. Thanks to everyone who helped!',
+    timestamp: '5 hours ago',
+    likes: 28,
+    replies: [
+      {
+        id: '2-1',
+        user: {
+          name: 'Lisa Wang',
+          avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+          level: 'Intermediate',
+          badge: '🌟'
+        },
+        content: 'Congratulations! 🎊 Would love to see your portfolio. Can you share the link?',
+        timestamp: '4 hours ago',
+        likes: 6
+      }
+    ],
+    tags: ['success', 'portfolio', 'css-animations'],
+    isLiked: true,
+    category: 'success'
+  },
+  {
+    id: '3',
+    user: {
+      name: 'Emma Thompson',
+      avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+      level: 'Advanced',
+      badge: '🚀'
+    },
+    content: 'Pro tip: Use CSS Grid for the main layout and Flexbox for component-level layouts. This combination gives you the best of both worlds for responsive design!',
+    timestamp: '1 day ago',
+    likes: 45,
+    replies: [],
+    tags: ['css-grid', 'flexbox', 'layout', 'tips'],
+    isLiked: false,
+    category: 'tip'
+  }
+]
 
 export default function ProjectDetail() {
   const { id } = useParams()
   const { state, dispatch } = useApp()
   const [activeTab, setActiveTab] = useState('overview')
+  const [discussions, setDiscussions] = useState(mockDiscussions)
+  const [newPost, setNewPost] = useState('')
+  const [replyTo, setReplyTo] = useState<string | null>(null)
+  const [replyContent, setReplyContent] = useState('')
+  const [discussionFilter, setDiscussionFilter] = useState('all')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [isBookmarked, setIsBookmarked] = useState(false)
+  const [projectLikes, setProjectLikes] = useState(342)
+  const [hasLiked, setHasLiked] = useState(false)
   
   const project = projectData[id as keyof typeof projectData]
   
@@ -120,6 +234,123 @@ export default function ProjectDetail() {
     }
   }
 
+  const handleGitHubClick = () => {
+    // Dynamic GitHub functionality
+    if (project.githubRepo) {
+      window.open(project.githubRepo, '_blank')
+    } else {
+      // Create new repository
+      const repoName = project.title.toLowerCase().replace(/\s+/g, '-')
+      const description = encodeURIComponent(project.description)
+      const githubUrl = `https://github.com/new?name=${repoName}&description=${description}&visibility=public`
+      window.open(githubUrl, '_blank')
+    }
+  }
+
+  const handleLiveDemo = () => {
+    if (project.liveDemo) {
+      window.open(project.liveDemo, '_blank')
+    } else {
+      alert('Deploy your project first to see the live demo! Use GitHub Pages or Netlify for free hosting.')
+    }
+  }
+
+  const handleBookmark = () => {
+    setIsBookmarked(!isBookmarked)
+    // In real app, save to user's bookmarks
+  }
+
+  const handleLike = () => {
+    if (hasLiked) {
+      setProjectLikes(prev => prev - 1)
+    } else {
+      setProjectLikes(prev => prev + 1)
+    }
+    setHasLiked(!hasLiked)
+  }
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: project.title,
+        text: project.description,
+        url: window.location.href,
+      })
+    } else {
+      navigator.clipboard.writeText(window.location.href)
+      alert('Project link copied to clipboard!')
+    }
+  }
+
+  const handlePostSubmit = () => {
+    if (!newPost.trim()) return
+
+    const newDiscussion = {
+      id: Date.now().toString(),
+      user: {
+        name: state.user?.name || 'You',
+        avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+        level: state.user?.level || 'Beginner',
+        badge: '🌱'
+      },
+      content: newPost,
+      timestamp: 'Just now',
+      likes: 0,
+      replies: [],
+      tags: [],
+      isLiked: false,
+      category: 'question'
+    }
+
+    setDiscussions(prev => [newDiscussion, ...prev])
+    setNewPost('')
+  }
+
+  const handleReplySubmit = (discussionId: string) => {
+    if (!replyContent.trim()) return
+
+    const newReply = {
+      id: `${discussionId}-${Date.now()}`,
+      user: {
+        name: state.user?.name || 'You',
+        avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop',
+        level: state.user?.level || 'Beginner',
+        badge: '🌱'
+      },
+      content: replyContent,
+      timestamp: 'Just now',
+      likes: 0
+    }
+
+    setDiscussions(prev => prev.map(discussion => 
+      discussion.id === discussionId 
+        ? { ...discussion, replies: [...discussion.replies, newReply] }
+        : discussion
+    ))
+    
+    setReplyContent('')
+    setReplyTo(null)
+  }
+
+  const handleLikeDiscussion = (discussionId: string) => {
+    setDiscussions(prev => prev.map(discussion => 
+      discussion.id === discussionId 
+        ? { 
+            ...discussion, 
+            likes: discussion.isLiked ? discussion.likes - 1 : discussion.likes + 1,
+            isLiked: !discussion.isLiked 
+          }
+        : discussion
+    ))
+  }
+
+  const filteredDiscussions = discussions.filter(discussion => {
+    const matchesFilter = discussionFilter === 'all' || discussion.category === discussionFilter
+    const matchesSearch = discussion.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         discussion.user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return matchesFilter && matchesSearch
+  })
+
   const completedMilestones = project.milestones.filter(m => m.completed).length
   const progressPercentage = (completedMilestones / project.milestones.length) * 100
 
@@ -135,7 +366,8 @@ export default function ProjectDetail() {
   const tabs = [
     { id: 'overview', name: 'Overview', icon: BookOpen },
     { id: 'milestones', name: 'Milestones', icon: Target },
-    { id: 'resources', name: 'Resources', icon: Code }
+    { id: 'resources', name: 'Resources', icon: Code },
+    { id: 'discussion', name: 'Discussion', icon: MessageCircle, count: discussions.length }
   ]
 
   return (
@@ -171,14 +403,32 @@ export default function ProjectDetail() {
                     </div>
                   </div>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(project.difficulty)}`}>
-                  {project.difficulty}
-                </span>
+                <div className="flex items-center space-x-2">
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${getDifficultyColor(project.difficulty)}`}>
+                    {project.difficulty}
+                  </span>
+                </div>
               </div>
 
               <p className="text-gray-700 mb-6 leading-relaxed">
                 {project.description}
               </p>
+
+              {/* Project Stats */}
+              <div className="flex items-center space-x-6 mb-6 text-sm text-gray-600">
+                <div className="flex items-center">
+                  <Heart className={`w-4 h-4 mr-1 ${hasLiked ? 'text-red-500 fill-current' : 'text-gray-400'}`} />
+                  <span>{projectLikes} likes</span>
+                </div>
+                <div className="flex items-center">
+                  <Users className="w-4 h-4 mr-1" />
+                  <span>{project.studentsCompleted} completed</span>
+                </div>
+                <div className="flex items-center">
+                  <Star className="w-4 h-4 mr-1 text-yellow-400 fill-current" />
+                  <span>{project.rating} rating</span>
+                </div>
+              </div>
 
               {/* Technologies */}
               <div className="mb-6">
@@ -195,33 +445,8 @@ export default function ProjectDetail() {
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-center mb-2">
-                    <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                  </div>
-                  <div className="text-lg font-bold text-gray-900">{project.rating}</div>
-                  <div className="text-sm text-gray-600">Rating</div>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-center mb-2">
-                    <Users className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div className="text-lg font-bold text-gray-900">{project.studentsCompleted}</div>
-                  <div className="text-sm text-gray-600">Completed</div>
-                </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center justify-center mb-2">
-                    <Target className="w-5 h-5 text-green-600" />
-                  </div>
-                  <div className="text-lg font-bold text-gray-900">{project.milestones.length}</div>
-                  <div className="text-sm text-gray-600">Milestones</div>
-                </div>
-              </div>
-
               {/* Action Buttons */}
-              <div className="flex space-x-4">
+              <div className="flex flex-wrap gap-3">
                 <button
                   onClick={handleStartProject}
                   className="btn-primary flex items-center"
@@ -229,9 +454,45 @@ export default function ProjectDetail() {
                   <Play className="w-4 h-4 mr-2" />
                   {project.status === 'in-progress' ? 'Continue Project' : 'Start Project'}
                 </button>
-                <button className="btn-secondary flex items-center">
+                
+                <button
+                  onClick={handleGitHubClick}
+                  className="btn-secondary flex items-center"
+                >
                   <Github className="w-4 h-4 mr-2" />
-                  View on GitHub
+                  {project.githubRepo ? 'View Repository' : 'Create Repository'}
+                </button>
+
+                <button
+                  onClick={handleLiveDemo}
+                  className="btn-secondary flex items-center"
+                >
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  {project.liveDemo ? 'Live Demo' : 'Deploy Project'}
+                </button>
+
+                <button
+                  onClick={handleLike}
+                  className={`btn-secondary flex items-center ${hasLiked ? 'bg-red-50 text-red-600 border-red-200' : ''}`}
+                >
+                  <Heart className={`w-4 h-4 mr-2 ${hasLiked ? 'fill-current' : ''}`} />
+                  {hasLiked ? 'Liked' : 'Like'}
+                </button>
+
+                <button
+                  onClick={handleBookmark}
+                  className={`btn-secondary flex items-center ${isBookmarked ? 'bg-yellow-50 text-yellow-600 border-yellow-200' : ''}`}
+                >
+                  <Bookmark className={`w-4 h-4 mr-2 ${isBookmarked ? 'fill-current' : ''}`} />
+                  {isBookmarked ? 'Saved' : 'Save'}
+                </button>
+
+                <button
+                  onClick={handleShare}
+                  className="btn-secondary flex items-center"
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
                 </button>
               </div>
             </div>
@@ -254,6 +515,11 @@ export default function ProjectDetail() {
                       >
                         <Icon className="w-4 h-4 mr-2" />
                         {tab.name}
+                        {tab.count && (
+                          <span className="ml-2 bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
+                            {tab.count}
+                          </span>
+                        )}
                       </button>
                     )
                   })}
@@ -368,6 +634,229 @@ export default function ProjectDetail() {
                   ))}
                 </div>
               )}
+
+              {activeTab === 'discussion' && (
+                <div className="space-y-6">
+                  {/* Discussion Header */}
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold text-gray-900">Project Discussion</h3>
+                    <div className="flex items-center space-x-3">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          placeholder="Search discussions..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                        />
+                      </div>
+                      <select
+                        value={discussionFilter}
+                        onChange={(e) => setDiscussionFilter(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      >
+                        <option value="all">All Posts</option>
+                        <option value="question">Questions</option>
+                        <option value="tip">Tips</option>
+                        <option value="success">Success Stories</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* New Post */}
+                  <div className="bg-white border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-start space-x-3">
+                      <img
+                        src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop"
+                        alt="Your avatar"
+                        className="w-10 h-10 rounded-full"
+                      />
+                      <div className="flex-1">
+                        <textarea
+                          value={newPost}
+                          onChange={(e) => setNewPost(e.target.value)}
+                          placeholder="Ask a question, share a tip, or celebrate your progress..."
+                          className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                          rows={3}
+                        />
+                        <div className="flex items-center justify-between mt-3">
+                          <div className="flex items-center space-x-2 text-sm text-gray-500">
+                            <span>💡 Tip: Be specific about your issue for better help</span>
+                          </div>
+                          <button
+                            onClick={handlePostSubmit}
+                            disabled={!newPost.trim()}
+                            className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                          >
+                            <Send className="w-4 h-4 mr-2" />
+                            Post
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Discussion Posts */}
+                  <div className="space-y-4">
+                    {filteredDiscussions.map((discussion) => (
+                      <motion.div
+                        key={discussion.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="bg-white border border-gray-200 rounded-lg p-6"
+                      >
+                        {/* Post Header */}
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center space-x-3">
+                            <img
+                              src={discussion.user.avatar}
+                              alt={discussion.user.name}
+                              className="w-10 h-10 rounded-full"
+                            />
+                            <div>
+                              <div className="flex items-center space-x-2">
+                                <h4 className="font-semibold text-gray-900">{discussion.user.name}</h4>
+                                <span className="text-lg">{discussion.user.badge}</span>
+                                <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                  {discussion.user.level}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-500">{discussion.timestamp}</p>
+                            </div>
+                          </div>
+                          <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            discussion.category === 'question' ? 'bg-blue-100 text-blue-800' :
+                            discussion.category === 'tip' ? 'bg-green-100 text-green-800' :
+                            'bg-purple-100 text-purple-800'
+                          }`}>
+                            {discussion.category}
+                          </div>
+                        </div>
+
+                        {/* Post Content */}
+                        <p className="text-gray-700 mb-4">{discussion.content}</p>
+
+                        {/* Tags */}
+                        {discussion.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {discussion.tags.map((tag, index) => (
+                              <span
+                                key={index}
+                                className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Post Actions */}
+                        <div className="flex items-center space-x-4 mb-4">
+                          <button
+                            onClick={() => handleLikeDiscussion(discussion.id)}
+                            className={`flex items-center space-x-1 text-sm ${
+                              discussion.isLiked ? 'text-red-600' : 'text-gray-500 hover:text-red-600'
+                            }`}
+                          >
+                            <ThumbsUp className={`w-4 h-4 ${discussion.isLiked ? 'fill-current' : ''}`} />
+                            <span>{discussion.likes}</span>
+                          </button>
+                          <button
+                            onClick={() => setReplyTo(replyTo === discussion.id ? null : discussion.id)}
+                            className="flex items-center space-x-1 text-sm text-gray-500 hover:text-primary-600"
+                          >
+                            <Reply className="w-4 h-4" />
+                            <span>Reply</span>
+                          </button>
+                          <span className="text-sm text-gray-500">
+                            {discussion.replies.length} replies
+                          </span>
+                        </div>
+
+                        {/* Reply Form */}
+                        {replyTo === discussion.id && (
+                          <div className="border-t border-gray-200 pt-4 mb-4">
+                            <div className="flex items-start space-x-3">
+                              <img
+                                src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=50&h=50&fit=crop"
+                                alt="Your avatar"
+                                className="w-8 h-8 rounded-full"
+                              />
+                              <div className="flex-1">
+                                <textarea
+                                  value={replyContent}
+                                  onChange={(e) => setReplyContent(e.target.value)}
+                                  placeholder="Write your reply..."
+                                  className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                                  rows={2}
+                                />
+                                <div className="flex items-center justify-end space-x-2 mt-2">
+                                  <button
+                                    onClick={() => setReplyTo(null)}
+                                    className="text-sm text-gray-500 hover:text-gray-700"
+                                  >
+                                    Cancel
+                                  </button>
+                                  <button
+                                    onClick={() => handleReplySubmit(discussion.id)}
+                                    disabled={!replyContent.trim()}
+                                    className="btn-primary text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                  >
+                                    Reply
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Replies */}
+                        {discussion.replies.length > 0 && (
+                          <div className="border-t border-gray-200 pt-4 space-y-4">
+                            {discussion.replies.map((reply) => (
+                              <div key={reply.id} className="flex items-start space-x-3">
+                                <img
+                                  src={reply.user.avatar}
+                                  alt={reply.user.name}
+                                  className="w-8 h-8 rounded-full"
+                                />
+                                <div className="flex-1">
+                                  <div className="flex items-center space-x-2 mb-1">
+                                    <h5 className="font-medium text-gray-900 text-sm">{reply.user.name}</h5>
+                                    <span className="text-sm">{reply.user.badge}</span>
+                                    <span className="text-xs text-gray-500">{reply.timestamp}</span>
+                                  </div>
+                                  <p className="text-gray-700 text-sm">{reply.content}</p>
+                                  <div className="flex items-center space-x-2 mt-2">
+                                    <button className="flex items-center space-x-1 text-xs text-gray-500 hover:text-red-600">
+                                      <ThumbsUp className="w-3 h-3" />
+                                      <span>{reply.likes}</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {filteredDiscussions.length === 0 && (
+                    <div className="text-center py-8">
+                      <MessageCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">No discussions found</h3>
+                      <p className="text-gray-600">
+                        {searchTerm || discussionFilter !== 'all' 
+                          ? 'Try adjusting your search or filter'
+                          : 'Be the first to start a discussion!'
+                        }
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -405,9 +894,12 @@ export default function ProjectDetail() {
                   className="w-full"
                   projectPath="/home/project"
                 />
-                <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={handleGitHubClick}
+                  className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
                   <Github className="w-4 h-4 mr-2" />
-                  Create Repository
+                  {project.githubRepo ? 'View Repository' : 'Create Repository'}
                 </button>
                 <Link
                   to={`/projects/${project.id}/evaluate/milestone-1`}
@@ -416,10 +908,39 @@ export default function ProjectDetail() {
                   <Upload className="w-4 h-4 mr-2" />
                   Submit Code for Review
                 </Link>
-                <button className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                <button 
+                  onClick={() => setActiveTab('discussion')}
+                  className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
                   <Users className="w-4 h-4 mr-2" />
-                  Join Discussion
+                  Join Discussion ({discussions.length})
                 </button>
+              </div>
+            </div>
+
+            {/* Community Stats */}
+            <div className="card">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Community</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Active Learners</span>
+                  <span className="font-semibold text-gray-900">234</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Questions Asked</span>
+                  <span className="font-semibold text-gray-900">89</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Success Stories</span>
+                  <span className="font-semibold text-gray-900">156</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600">Average Rating</span>
+                  <div className="flex items-center">
+                    <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
+                    <span className="font-semibold text-gray-900">{project.rating}</span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -430,9 +951,12 @@ export default function ProjectDetail() {
                 <a href="#" className="block text-primary-600 hover:text-primary-700">
                   📚 View Documentation
                 </a>
-                <a href="#" className="block text-primary-600 hover:text-primary-700">
+                <button 
+                  onClick={() => setActiveTab('discussion')}
+                  className="block text-primary-600 hover:text-primary-700 w-full text-left"
+                >
                   💬 Ask the Community
-                </a>
+                </button>
                 <a href="#" className="block text-primary-600 hover:text-primary-700">
                   🎥 Watch Tutorial Videos
                 </a>
